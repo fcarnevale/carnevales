@@ -9,10 +9,16 @@ describe "Pages" do
       page.should have_selector('h1', text: 'Carneval.es')
     end
 
-    it "should have the title 'Carneval.es [home]'" do
+    it "should have the base title" do
       visit '/pages/home'
-      page.should have_selector('title', text: "Carneval.es [home]")
+      page.should have_selector('title', text: "Carneval.es")
 	  end
+
+    it "should not have a custom page title" do
+      visit '/pages/home'
+      page.should_not have_selector('title', text: " [home]")
+    end
+
   end
 
   describe "Profile page" do
