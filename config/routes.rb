@@ -1,7 +1,13 @@
 Carnevales::Application.routes.draw do
-  get "pages/home"
-  get "pages/profile"
-  get "pages/about"
+  get "users/new"
+
+  root to: "pages#home"
+
+  match '/signup',  to: "users#new"
+
+  match '/profile', to: "pages#profile"
+  match '/about',   to: "pages#about"
+  match '/contact', to: "pages#contact"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
