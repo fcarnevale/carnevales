@@ -22,15 +22,31 @@ describe "Pages" do
   end
 
   describe "Profile page" do
+    let(:user) { FactoryGirl.create(:user) }
 
-    it "should have the content 'My Profile'" do
-      visit profile_path
-      page.should have_selector('h1', text: 'My Profile')
+    it "should not be visible if signed out" do
+      visit root_path
+      page.should_not have_link('Profile', href: user_path(user))
     end
+    describe "signed in profile page" do
+      before do
+        visit signin_path
+        fill_in "Email",  with: user.email.upcase
+        fill_in "Password", with: user.password 
+        click_button "Sign in"
+      end 
+      it "should be visible if signed in" do 
+        page.should have_link('Profile', href: user_path(user))
+      end
+      it "should have the content 'My Profile'" do
+        visit profile_path
+        page.should have_selector('h1', text: 'My Profile')
+      end
 
-    it "should have the title 'Carneval.es [profile]'" do
-      visit profile_path
-      page.should have_selector('title', text: full_title("profile"))
+      it "should have the title 'Carneval.es [profile]'" do
+        visit profile_path
+        page.should have_selector('title', text: full_title("profile"))
+      end
     end
   end
 
@@ -64,8 +80,8 @@ describe "Pages" do
     visit root_path
     click_link "About"
     page.should have_selector 'title', text: "Carneval.es [about]"
-    click_link "Profile"
-    page.should have_selector 'title', text: "Carneval.es [profile]"
+    #click_link "Profile"
+    #page.should have_selector 'title', text: "Carneval.es [profile]"
     click_link "Contact"
     page.should have_selector 'title', text: "Carneval.es [contact]"
     click_link "Home"
